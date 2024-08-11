@@ -1,0 +1,67 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    height: 100vh;
+    margin: 0;
+    background-color: #1f1f1f;
+}
+
+.side-panel {
+    width: 200px;
+    height: 100%;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: fixed; /* Makes the panel fixed */
+    top: 0;
+    left: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between rows */
+    margin-left: 250px; /* Adjust for the width of the side panel plus some margin */
+    margin-top: 35px;
+    margin-bottom: 50px;
+    overflow-y: none; /* Enables scrolling for content */
+    flex-grow: 1; /* Ensures the container takes up remaining space */
+}
+
+.row {
+    display: flex;
+    gap: 0px; /* Space between boxes */
+}
+
+.box {
+    background-color: #1f1f1f;
+    color: white;
+    padding: 1px;
+    border-radius: 0px;
+    text-align: center;
+    min-width: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100px; /* Adjust height as needed */
+}
+
+.top, .bottom {
+    font-size: 14px;
+}
+
+.middle {
+    font-size: 44px;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.full-lyrics {
+    margin-bottom: 5px;
+    color: #888888;
+}

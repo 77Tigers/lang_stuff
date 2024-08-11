@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lyrics Machine</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</head>
+<body>
+    <div class="side-panel">
+        <div class="dropdown-container">
+            <select id="song-dropdown">
+                {% for song in song_options %}
+                    <option value="{{ song }}">{{ song }}</option>
+                {% endfor %}
+            </select>
+            <button id="request-button">Request Song</button>
+        </div>
+        <button id="hide-button">Hide</button>
+        <button id="add-to-core-button">Add to Core</button>
+        <button id="gpt-button">GPT</button>
+    </div>
+
+    <div class="container">
+        <!-- Rows of chunks will be loaded here dynamically -->
+    </div>
+</body>
+</html>
