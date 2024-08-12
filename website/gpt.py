@@ -38,18 +38,20 @@ default = """爱/love|着/ing|你/you| |也/also|爱/love|着/ing|我/I
 我/I|的/’s|心/heart|却/but|被/be|你/you|占领/occupied
 爱/love|着/ing|你/you"""
 
-def translate_word_in_context(text, test=True):
+def translate_word_in_context(context, word, test=True):
     completion = client.chat.completions.create(
         model="gpt-4o-mini", # + ("-mini" if test else ""),
         messages=[
             {"role": "system", "content": "You are a translator and give no explanations and get straight to the point."},
             {"role": "user", "content": 
-             "Translate only the word between *s. Give the ENGLISH only, with no *s. Never give chinese. Translate the word IN CONTEXT. No more than 4 words.\n" + text}
+                #"Translate only the word between *s. Give the ENGLISH only, with no *s. Never give chinese. Translate the word IN CONTEXT. No more than 4 words.\n" + text}
+                "Translate the word on the SECOND LINE only. Give the english ONLY, with no *s. If there are multiple meanings, give the one that fits the first line best.\n" + context + "\n" + word
+            }
         ],
         temperature = 0.0,
         top_p = 0.1
     )
     ans = completion.choices[0].message.content.lower()
-    print("sentence: " + text)
+    print("sentence: " + context)
     print("GPT call: " + ans)
     return ans

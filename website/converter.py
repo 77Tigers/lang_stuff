@@ -28,7 +28,7 @@ def translate_word(word, context):
     # Translate the word to English
     if word in CORE:
         return "-"
-    return gpt.translate_word_in_context(context)
+    return gpt.translate_word_in_context(context, word)
 
 def convert_song_to_chunks(song_lyrics):
     """
@@ -103,7 +103,7 @@ def convert_song_to_chunks(song_lyrics):
 
 x = None
 if __name__ == "__main__":
-    song = "forward_snow_you"
+    song = "should_all_have_dream"
     with open(f'songs/{song}/lyrics.txt', encoding="utf8") as r:
         inp = r.readlines()
         x = convert_song_to_chunks(inp)
