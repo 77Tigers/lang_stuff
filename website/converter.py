@@ -1,10 +1,13 @@
 # the aim of this file is to convert the song lyrics into a chunk-based format to be displayed on the website
 from better_google_translate import get_pinyin, translate_text
 import gpt
-#from chinese_keybert import Chinese_Extractor
+from chinese_english_lookup import Dictionary
 
 import pynlpir
 import pickle
+
+# go to files and set encoding = utf-8, or it won't work
+#d = Dictionary()
 
 CORE = []
 with open("core.txt", encoding="utf8") as f:
@@ -24,10 +27,16 @@ def get_words(line):
     pynlpir.close()
     return words
 
+accepted_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~ "
+
 def translate_word(word, context):
     # Translate the word to English
     if word in CORE:
         return "-"
+    #ans = d.lookup(word)
+    #if ans != None and ans:
+    if all([c in accepted_chars for c in word]):
+        return " "
     return gpt.translate_word_in_context(context, word)
 
 def convert_song_to_chunks(song_lyrics):
@@ -46,8 +55,15 @@ def convert_song_to_chunks(song_lyrics):
     # Initialize the list of chunks
     chunks = []
 
+    line_cache = {}
+
     # Iterate over each line in the song lyrics
     for line in lines:
+        line = line.strip()
+        if line in line_cache:
+            chunks.append(line_cache[line])
+            continue
+
         # Split the line into words
         words = get_words(line)
 
@@ -77,6 +93,7 @@ def convert_song_to_chunks(song_lyrics):
         line_translation = translate_text(line)
 
         # Append the line data to the list of chunks
+        line_cache[line] = (line_data, line_translation)
         chunks.append((line_data, line_translation))
 
     return chunks
@@ -103,7 +120,7 @@ def convert_song_to_chunks(song_lyrics):
 
 x = None
 if __name__ == "__main__":
-    song = "whale"
+    song = "full_stop"
     with open(f'songs/{song}/lyrics.txt', encoding="utf8") as r:
         inp = r.readlines()
         x = convert_song_to_chunks(inp)

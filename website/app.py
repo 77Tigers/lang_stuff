@@ -1,19 +1,9 @@
 from flask import Flask, render_template, request, jsonify
 import pickle
 import converter
+from lib import *
 
 app = Flask(__name__)
-
-# Define available song options
-song_options = [
-    "Selfless",
-    "legend_star_him",
-    "river_of_oblivion",
-    "forward_snow_you",
-    "why_not_love",
-    "should_all_have_dream",
-    "whale"
-]
 
 def open_song(song_name):
     with open(f'songs/{song_name}/chunks.pkl', 'rb') as f:
@@ -76,4 +66,4 @@ def add_to_core_request():
     return jsonify({"status": "success"})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5001)
