@@ -2,12 +2,13 @@
 from better_google_translate import get_pinyin, translate_text
 import gpt
 from chinese_english_lookup import Dictionary
+from lib import is_roman
 
 import pynlpir
 import pickle
 
 # go to files and set encoding = utf-8, or it won't work
-#d = Dictionary()
+d = Dictionary()
 
 CORE = []
 with open("core.txt", encoding="utf8") as f:
@@ -27,16 +28,15 @@ def get_words(line):
     pynlpir.close()
     return words
 
-accepted_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~ "
 
 def translate_word(word, context):
     # Translate the word to English
-    if word in CORE:
-        return "-"
+    if word in CORE or is_roman(word):
+        return ""
     #ans = d.lookup(word)
     #if ans != None and ans:
-    if all([c in accepted_chars for c in word]):
-        return " "
+    if is_roman(word):
+        return ""
     return gpt.translate_word_in_context(context, word)
 
 def convert_song_to_chunks(song_lyrics):
@@ -75,7 +75,7 @@ def convert_song_to_chunks(song_lyrics):
         # Iterate over each word in the line
         for i, word in enumerate(words):
             # Get the pinyin, Chinese character, and English translation for the word
-            pinyin = get_pinyin(word)
+            pinyin = get_pinyin(word) if not is_roman(word) else ""
             # in context trick
             #translation = translate_word(f"{line.strip()}...'{word}' 意味着")
             # translation = translate_word(word)
@@ -120,7 +120,7 @@ def convert_song_to_chunks(song_lyrics):
 
 x = None
 if __name__ == "__main__":
-    song = "full_stop"
+    song = "passengers"
     with open(f'songs/{song}/lyrics.txt', encoding="utf8") as r:
         inp = r.readlines()
         x = convert_song_to_chunks(inp)

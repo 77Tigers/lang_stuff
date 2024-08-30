@@ -2,7 +2,6 @@ body {
     font-family: Arial, sans-serif;
     display: flex;
     height: 100vh;
-    margin: 0;
     background-color: #1f1f1f;
 }
 
@@ -23,17 +22,17 @@ body {
 .container {
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Space between rows */
     margin-left: 250px; /* Adjust for the width of the side panel plus some margin */
     margin-top: 35px;
     margin-bottom: 100px;
-    overflow-y: none; /* Enables scrolling for content */
+    padding-bottom: 100px;
     flex-grow: 1; /* Ensures the container takes up remaining space */
 }
 
 .row {
     display: flex;
     gap: 0px; /* Space between boxes */
+    margin-bottom: 15px;
 }
 
 .box {
@@ -49,8 +48,26 @@ body {
     height: 100px; /* Adjust height as needed */
 }
 
-.top, .bottom {
+.top {
+    font-size: 20px;
+    height: 20px;
+    color: #888888;
+    z-index: 10; /* Make sure it's above other elements */
+}
+
+.top.active {
+    opacity: 0;
+    z-index: 10;
+}
+
+.top.active:hover {
+    opacity: 1 !important;
+    color: #FFFFFF;
+}
+
+.bottom {
     font-size: 14px;
+    height: 15px;
 }
 
 .middle {
@@ -63,5 +80,14 @@ body {
 
 .full-lyrics {
     margin-bottom: 5px;
-    color: #888888;
+    color: #AAAAAA;
+}
+
+.footer {
+    min-height: 200px;
+}
+
+.checkbox-container {
+    display: inline-flex;
+    align-items: center;
 }

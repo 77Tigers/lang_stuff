@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='flashcards.css') }}">
+    <script src="{{ url_for('static', filename='flashcards.js') }}" defer></script>
+</head>
+<body>
+    <div class="container">
+        <div id="flashcard" class="flashcard">
+            <div id="front">front</div>
+            <div id="back">back</div>
+        </div>
+        <div>
+            <button id="none" class="button">none</button>
+            <button id="pinyin" class="button">pinyin</button>
+            <button id="meaning" class="button">meaning</button>
+            <button id="both" class="button">both</button>
+        </div>
+    </div>
+</body>
+</html>

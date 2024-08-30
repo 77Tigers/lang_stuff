@@ -9,20 +9,30 @@ function addBoxEventListeners() {
                 element: this
             };
 
-            // Highlight the selected box (optional)
-            document.querySelectorAll('.box').forEach(b => b.style.border = 'none');
-            this.style.border = '2px solid red'; // Example highlight
+            removeBoxStyles();
+
+            // this.style.border = '2px solid red'; // Example highlight
+            // better highlight that doesn't change the box size
+            this.style.boxShadow = '0 0 0 2px red';
+            // make shadow more important
+            this.style.zIndex = '1';
         });
     });
 }
 
-// Initial event listener setup
-addBoxEventListeners();
+function removeBoxStyles() {
+    // Highlight the selected box (optional)
+    document.querySelectorAll('.box').forEach(b => {
+        b.style.boxShadow = 'none';
+        b.style.zIndex = '0';
+    });
+}
 
-// Handle button clicks on the side panel
-document.getElementById('hide-button').addEventListener('click', function () {
-    if (selectedBox) {
-        processAction('hide');
+// remove box styles when you press esc
+document.addEventListener('keydown', function(event) {
+    if (event.key === "Escape") {
+        removeBoxStyles();
+        selectedBox = null;
     }
 });
 
@@ -46,14 +56,13 @@ document.getElementById('add-to-core-button').addEventListener('click', function
     }
 });
 
-document.getElementById('gpt-button').addEventListener('click', function () {
-    if (selectedBox) {
-        processAction('gpt');
-    }
-});
+// document.getElementById('gpt-button').addEventListener('click', function () {
+//     if (selectedBox) {
+//         processAction('gpt');
+//     }
+// });
 
-// Handle song request
-document.getElementById('request-button').addEventListener('click', function () {
+function requestChosenSong() {
     const songName = document.getElementById('song-dropdown').value;
 
     fetch('/request-song', {
@@ -70,6 +79,12 @@ document.getElementById('request-button').addEventListener('click', function () 
 
         // Render the new rows
         data.forEach((row, lineIndex) => {
+            // Insert the full line's lyrics above the row
+            const lyricsElement = document.createElement('div');
+            lyricsElement.classList.add('full-lyrics');
+            lyricsElement.innerText = row[1];  // **Insert the full line's lyrics**
+            document.querySelector('.container').appendChild(lyricsElement);  // Append the lyrics above the row
+
             const rowElement = document.createElement('div');
             rowElement.classList.add('row');
             rowElement.setAttribute('data-line', lineIndex);
@@ -89,20 +104,38 @@ document.getElementById('request-button').addEventListener('click', function () 
             });
 
             document.querySelector('.container').appendChild(rowElement);
-
-            // Insert the full line's lyrics below the row
-            const lyricsElement = document.createElement('div');
-            lyricsElement.classList.add('full-lyrics');
-            //lyricsElement.style.color = 'white';  // Style for lyrics text
-            //lyricsElement.style.marginBottom = '10px'; // Space after lyrics
-            lyricsElement.innerText = row[1];  // **Insert the full line's lyrics**
-
-            document.querySelector('.container').appendChild(lyricsElement);  // Append the lyrics below the row
         });
 
         // Re-assign event listeners to the newly added boxes
         addBoxEventListeners();
+
+        // Add footer:
+        const footer = document.createElement('div');
+        footer.classList.add('footer');
+        document.querySelector('.container').appendChild(footer);
+
+        readingModeUpdate();
     });
+}
+
+const readingCheckbox = document.getElementById("toggle-checkbox");
+function readingModeUpdate() {
+    var elements = document.querySelectorAll(".top");
+    elements.forEach(function(element) {
+        if (readingCheckbox.checked) {
+            element.classList.add("active");
+        } else {
+            element.classList.remove("active");
+        }
+    }, readingCheckbox);
+}
+
+readingCheckbox.addEventListener('change', readingModeUpdate);
+
+document.addEventListener('keypress', function(event) {
+    if (event.key === "r") {
+        requestChosenSong();
+    }
 });
 
 // Process action for the side panel buttons
@@ -123,3 +156,22 @@ function processAction(action) {
         console.log(`Action processed: ${action} on line ${data.line}, position ${data.position}`);
     });
 }
+
+window.onload = function() {
+    // get URL and check if the path is /songs/<song_name>
+    const url = new URL(window.location.href);
+    const path = url.pathname;
+    const words = path.split('/');
+    if (words[1] == 'songs' && words.length == 3) {
+        const songName = words[2];
+        document.getElementById('song-dropdown').value = songName;
+        requestChosenSong();
+    }
+
+    const dropdown = document.getElementById('song-dropdown');
+    dropdown.addEventListener('change', function() {
+        const songName = dropdown.value;
+        window.location.href = `/songs/${songName}`;
+    });
+};
+

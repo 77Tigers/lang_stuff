@@ -774,7 +774,7 @@
 774	优	46613	84.683904599852	you1	excellent/superior
 775	怪	46600	84.707986787127	guai4	queer/to blame
 776	香	46525	84.732030215517	xiang1	fragrant/incense/(of food) savory/appetizing/sweet/scented/popular
-777	著	46239	84.755925843359	zhu4/zhe	
+777	著	46239	84.755925843359	zhu4/zhe	renowned/attach/affix/manifest/wear/continuous action(zhe)
 778	田	45886	84.779639046048	tian2	(surname)/field/farm
 779	铁	45798	84.803306771645	tie3	iron
 780	控	45664	84.826905248035	kong4	to accuse/to charge/to control/to sue
@@ -1716,7 +1716,7 @@
 1716	吕	10156	95.875376086506	lu:3/lv3	(surname)
 1717	玄	10151	95.880621972408	xuan2	black/mysterious
 1718	尘	10137	95.885860623318	chen2	dust/dirt/earth
-1719	冯	10128	95.891094623162	feng2	
+1719	冯	10128	95.891094623162	feng2	surname/gallop/rely on
 1720	抚	10100	95.896314153022	fu3	to comfort/touch gently with hand
 1721	浅	10088	95.90152748146	jian1/qian3	sound of moving water, shallow
 1722	敦	10084	95.906738742758	dun1	kind-hearted, kind-hearted/place name
