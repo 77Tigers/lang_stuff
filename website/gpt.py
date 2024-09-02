@@ -1,6 +1,7 @@
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
+import analysis
 
 # Load the .env file
 load_dotenv()
@@ -14,32 +15,39 @@ client = OpenAI()
 
 # eg: text = "这|是|一|种|折磨| |这|是|一|种|折磨"
 
-def translate_word_in_context(context, word, test=True):
+def translate_word_in_context(context, word, translation):
     completion = client.chat.completions.create(
-        model="gpt-4o-mini", # + ("-mini" if test else ""),
+        model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": "You are a translator from chinese to english."},
             {"role": "user", "content": 
                 #"Translate only the word between *s. Give the ENGLISH only, with no *s. Never give chinese. Translate the word IN CONTEXT. No more than 4 words.\n" + text}
-                "Translate the word on the SECOND LINE only. Give the english ONLY, with no *s. If there are multiple meanings, give the one that fits the first line best. If it's a measure word, just write '~' followed by what it measures. Explain your reasoning briefly (translate the sentence) and then put the answer (English) on the last line on its own.\n" + context + "\n" + word
+                "Translate the word on the next line. Context is on the line after. Give the english ONLY, with no *s. If there are multiple meanings, give the one that fits the first line best. Translate the sentence, choose an answer, explain your reasoning and then put the answer (must be English) on the last line on its own." +
+                "\nHere is the word: " + word +
+                "\nHere is the context for the sentence: " + context +
+                "\nHere is the translation of the sentence: " + translation +
+                "\nHere is the (long) list of possible meanings, etc:" + analysis.get_defs(word)[0]
+                
             }
         ],
         temperature = 0.0,
         top_p = 0.1
     )
+    print("==========")
     temp = completion.choices[0].message.content.lower().replace(word, "").strip() # to be printed for logs
     ans = temp.split("\n")[-1].split(":")[-1].strip()
     print("sentence: " + context)
     print("GPT call: " + temp)
 
-    if len(ans) > 25:
+    if len(ans) > 15:
+        print("RETRYING!!!!!")
         completion = client.chat.completions.create(
             model="gpt-4o-mini", # + ("-mini" if test else ""),
             messages=[
                 {"role": "system", "content": "summarise briefly"},
                 {"role": "user", "content": 
                     #"Translate only the word between *s. Give the ENGLISH only, with no *s. Never give chinese. Translate the word IN CONTEXT. No more than 4 words.\n" + text}
-                    "Write the translation decided upon and nothing else: \n" + temp
+                    "Write the translation of the given word decided upon and nothing else: \n" + temp
                 }
             ],
             temperature = 0.0,
@@ -47,5 +55,6 @@ def translate_word_in_context(context, word, test=True):
         )
         temp = completion.choices[0].message.content.lower().replace(word, "").strip() # to be printed for logs
         ans = temp.split("\n")[-1].split(":")[-1].strip()
+        print("NEW ANS: " + ans)
 
     return ans

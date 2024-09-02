@@ -29,7 +29,7 @@ def get_words(line):
     return words
 
 
-def translate_word(word, context):
+def translate_word(word, context, translation):
     # Translate the word to English
     if word in CORE or is_roman(word):
         return ""
@@ -37,7 +37,7 @@ def translate_word(word, context):
     #if ans != None and ans:
     if is_roman(word):
         return ""
-    return gpt.translate_word_in_context(context, word)
+    return gpt.translate_word_in_context(context, word, translation=translation)
 
 def convert_song_to_chunks(song_lyrics):
     """
@@ -72,6 +72,8 @@ def convert_song_to_chunks(song_lyrics):
 
         #line_pinyin = get_pinyin(line).strip().split(" ")
 
+        line_translation = translate_text(line)
+
         # Iterate over each word in the line
         for i, word in enumerate(words):
             # Get the pinyin, Chinese character, and English translation for the word
@@ -85,12 +87,14 @@ def convert_song_to_chunks(song_lyrics):
             # else:
             #     translation = ""
 
-            translation = translate_word(word, context=" ".join(words[:i]) + f" *{word}* " + " ".join(words[i+1:]))
+            translation = translate_word(
+                word,
+                context=" ".join(words[:i]) + f" *{word}* " + " ".join(words[i+1:]),
+                translation=line_translation
+            )
 
             # Append the tuple to the line data
             line_data.append((pinyin, word, translation))
-
-        line_translation = translate_text(line)
 
         # Append the line data to the list of chunks
         line_cache[line] = (line_data, line_translation)

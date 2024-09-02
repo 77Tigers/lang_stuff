@@ -8,6 +8,37 @@ import numpy as np
 import matplotlib.pyplot as plt
 plt.rcParams['font.sans-serif'] = ['SimHei']
 
+# single characters (frequency and meaning)
+single_chars = {}
+with open("single_chars.txt", "r", encoding="utf8") as f:
+    for line in f:
+        line = line.strip().split("\t")
+        if len(line) != 6:
+            l = line[1]
+            # if hanzidentifier.is_simplified(l):
+            #     print(line[1] + f" ({line[0]})", end=" ")
+            continue
+        rank, char, occurences, cum_prob, pinyin, meaning = line
+        if hanzidentifier.is_simplified(char):
+            single_chars[char] = (pinyin, meaning, cum_prob)
+
+# definitions back side of card
+def get_defs(word):
+    back_side = ""
+    found_single = False
+    if word in single_chars:
+        back_side += "\n" + single_chars[word][1]
+        found_single = True
+
+    lookup_results = converter.d.lookup(word)
+    lookup_successful = lookup_results is not None
+    if lookup_results is not None:
+        defs = lookup_results.definition_entries
+        for definition in defs:
+            back_side += "\n" + definition.pinyin + " " + ";".join(definition.definitions)
+    
+    return back_side, found_single, lookup_successful
+
 # TODO: cache the data in a single file for ease of access
 if __name__ == "__main__":
     # FREQUENCIES
@@ -31,37 +62,14 @@ if __name__ == "__main__":
     # plt.yticks(np.arange(0, max([pair[0] for pair in frequency_pairs_cut]), 5))
     # plt.show()
 
-    # single characters (frequency and meaning)
-    single_chars = {}
-    with open("single_chars.txt", "r", encoding="utf8") as f:
-        for line in f:
-            line = line.strip().split("\t")
-            if len(line) != 6:
-                l = line[1]
-                # if hanzidentifier.is_simplified(l):
-                #     print(line[1] + f" ({line[0]})", end=" ")
-                continue
-            rank, char, occurences, cum_prob, pinyin, meaning = line
-            if hanzidentifier.is_simplified(char):
-                single_chars[char] = (pinyin, meaning, cum_prob)
-
     # create a list of suggestions that the flashcards will go through one by one (sorted by a custom metric)
     suggestions = []
     for token in frequency_pairs:
         word = token[1]
-        back_side = better_google_translate.get_pinyin(word) + "\n"
+        back_side = better_google_translate.get_pinyin(word)
 
-        found_single = False
-        if token[1] in single_chars:
-            back_side += "\n" + single_chars[word][1]
-            found_single = True
-
-        lookup_results = converter.d.lookup(word)
-        lookup_successful = lookup_results is not None
-        if lookup_results is not None:
-            defs = lookup_results.definition_entries
-            for definition in defs:
-                back_side += "\n" + definition.pinyin + " " + ";".join(definition.definitions)
+        to_add, found_single, lookup_successful = get_defs(word)
+        back_side += to_add
         
         # set score to freuqency of the word
         word_score = token[0]

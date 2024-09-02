@@ -11,3 +11,5 @@ tie reading mode to add to core
 add side panel info
 blur out add to core when no card selected
 add "redo better" with right click
+add ability to edit meanings
+remove need to reload after add-to-core
