@@ -20,7 +20,7 @@ def open_song(song_name):
     if modified:
         with open(f'songs/{song_name}/chunks.pkl', 'wb') as f:
             pickle.dump(song_data, f)
-            print("HI")
+            print("saving modified song")
     return song_data
 
 @app.route('/')

@@ -32,7 +32,8 @@ body {
 .row {
     display: flex;
     gap: 0px; /* Space between boxes */
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
 .box {
