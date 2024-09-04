@@ -23,7 +23,8 @@ song_options = [
     "evening_breeze_elf",
     "hot_coffee",
     "rehearse_mirror_rose",
-    "passengers"
+    "passengers",
+    "meet_current_you",
 ]
 
 # checks if word uses roman characters

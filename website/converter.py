@@ -78,14 +78,6 @@ def convert_song_to_chunks(song_lyrics):
         for i, word in enumerate(words):
             # Get the pinyin, Chinese character, and English translation for the word
             pinyin = get_pinyin(word) if not is_roman(word) else ""
-            # in context trick
-            #translation = translate_word(f"{line.strip()}...'{word}' 意味着")
-            # translation = translate_word(word)
-            # translation = translation.split("'")
-            # if len(translation) > 1:
-            #     translation = translation[-2].tolower()
-            # else:
-            #     translation = ""
 
             translation = translate_word(
                 word,
@@ -124,7 +116,7 @@ def convert_song_to_chunks(song_lyrics):
 
 x = None
 if __name__ == "__main__":
-    song = "passengers"
+    song = "meet_current_you"
     with open(f'songs/{song}/lyrics.txt', encoding="utf8") as r:
         inp = r.readlines()
         x = convert_song_to_chunks(inp)

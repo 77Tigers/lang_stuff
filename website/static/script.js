@@ -1,7 +1,11 @@
+selectedBox = null;
+
 // Function to add click event listeners to boxes
 function addBoxEventListeners() {
     document.querySelectorAll('.box').forEach(box => {
         box.addEventListener('click', function () {
+            removeBoxStyles();
+
             // Store the selected box
             selectedBox = {
                 line: this.closest('.row').getAttribute('data-line'),
@@ -9,23 +13,39 @@ function addBoxEventListeners() {
                 element: this
             };
 
-            removeBoxStyles();
-
             // this.style.border = '2px solid red'; // Example highlight
             // better highlight that doesn't change the box size
             this.style.boxShadow = '0 0 0 2px red';
             // make shadow more important
             this.style.zIndex = '1';
+
+            // request word info from server
+            const word = this.querySelector('.middle').innerText;
+            fetch('/word-info', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ word: word }),
+            }).then(
+                response => response.json()
+            ).then(data => {
+                document.getElementById('word-info').innerText = data['info'];
+            });
         });
     });
 }
 
 function removeBoxStyles() {
-    // Highlight the selected box (optional)
-    document.querySelectorAll('.box').forEach(b => {
-        b.style.boxShadow = 'none';
-        b.style.zIndex = '0';
-    });
+    // document.querySelectorAll('.box').forEach(b => {
+    //     b.style.boxShadow = 'none';
+    //     b.style.zIndex = '0';
+    // });
+    if (selectedBox) {
+        selectedBox.element.style.boxShadow = 'none';
+        selectedBox.element.style.zIndex = '0';
+        document.getElementById('word-info').innerText = '...';
+    }
 }
 
 // remove box styles when you press esc
@@ -52,6 +72,9 @@ document.getElementById('add-to-core-button').addEventListener('click', function
         .then(response => response.json())
         .then(data => {
             console.log(`Added word to core: ${word}`);
+            // refresh page
+            //TODO: do this locally
+            requestChosenSong();
         });
     }
 });

@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, jsonify
 import pickle
 import converter
 from lib import *
+import analysis
 #from flask_cors import CORS
 
 app = Flask(__name__)
@@ -31,6 +32,18 @@ def home():
 @app.route('/songs/<song_name>', methods=['GET'])
 def song(song_name):
     return render_template('index.html', song_options=song_options)
+
+@app.route('/word-info', methods=['POST'])
+def word_info():
+    data = request.get_json()
+    word = data.get('word')
+    
+    # Perform some operations to get information about the word
+    info = analysis.get_defs(word)[0].strip()
+    
+    # Return the word information as JSON response
+    return jsonify({"info": info})
+
 
 @app.route('/flashcards/get', methods=['GET'])
 def get_flashcard():

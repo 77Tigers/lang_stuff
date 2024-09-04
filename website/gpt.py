@@ -47,7 +47,7 @@ def translate_word_in_context(context, word, translation):
                 {"role": "system", "content": "summarise briefly"},
                 {"role": "user", "content": 
                     #"Translate only the word between *s. Give the ENGLISH only, with no *s. Never give chinese. Translate the word IN CONTEXT. No more than 4 words.\n" + text}
-                    "Write the translation of the given word decided upon and nothing else: \n" + temp
+                    "Write the (english) translation of the given word that was decided upon (do NOT give a sentence) and nothing else. Here is the output:\n" + temp
                 }
             ],
             temperature = 0.0,
