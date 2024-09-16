@@ -15,10 +15,20 @@
                     <option value="{{ song }}">{{ song }}</option>
                 {% endfor %}
             </select>
-            <!-- <button id="request-button">Request Song</button> -->
-            <div class="checkbox-container">
-                <input type="checkbox" id="toggle-checkbox">
+            <input type="text" placeholder="Search.." id="song-search">
+            <ul id="song-list">
+                {% for song in song_options %}
+                    <li>
+                        {{ song }}
+                    </li>
+                {% endfor %}
+            </ul>
+            <div id="checkbox-container">
+                <input type="checkbox" id="reading-checkbox">
                 <label for="toggle-checkbox">Reading mode</label>
+                <br>
+                <input class="upside-down" type="checkbox" id="upside-down-checkbox">
+                <label class="upside-down" for="upside-down-checkbox">Upside Down</label>
             </div>
         </div>
         <button id="add-to-core-button">Add to Core</button>
@@ -27,7 +37,7 @@
         </div>
     </div>
 
-    <div class="container">
+    <div id="container">
         <!-- Rows of chunks will be loaded here dynamically -->
     </div>
 </body>
