@@ -4,7 +4,14 @@ import gpt
 from chinese_english_lookup import Dictionary
 from lib import is_roman
 
-import pynlpir
+# # import pynlpir
+# import jieba
+# # paddle.fluid api is removed in 2.6.0, you may use paddlepaddle2.5.2
+# jieba.initialize()
+# # jieba.enable_paddle()
+import thulac
+thu = thulac.thulac()
+
 import pickle
 
 # go to files and set encoding = utf-8, or it won't work
@@ -23,9 +30,15 @@ def add_to_core(word):
 def get_words(line):
     #kw_extractor = Chinese_Extractor()
     #return kw_extractor.generate_keywords(line, top_k=5, rank_methods="mmr")
-    pynlpir.open()
-    words = pynlpir.segment(line, pos_tagging=False)
-    pynlpir.close()
+
+    # pynlpir.open()
+    # words = pynlpir.segment(line, pos_tagging=False)
+    # pynlpir.close()
+
+    # words = list(jieba.cut(line, use_paddle=True))
+
+    words = [w[0] for w in thu.cut(line)]
+
     return words
 
 
@@ -116,7 +129,7 @@ def convert_song_to_chunks(song_lyrics):
 
 x = None
 if __name__ == "__main__":
-    song = "meet_current_you"
+    song = "everything_best_plan"
     with open(f'songs/{song}/lyrics.txt', encoding="utf8") as r:
         inp = r.readlines()
         x = convert_song_to_chunks(inp)

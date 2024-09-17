@@ -28,11 +28,12 @@ function addBoxEventListeners() {
                 return;
             }
 
-            // this.style.border = '2px solid red'; // Example highlight
-            // better highlight that doesn't change the box size
-            this.style.boxShadow = '0 0 0 2px red';
-            // make shadow more important
-            this.style.zIndex = '1';
+            // // this.style.border = '2px solid red'; // Example highlight
+            // // better highlight that doesn't change the box size
+            // this.style.boxShadow = '0 0 0 2px red';
+            // // make shadow more important
+            // this.style.zIndex = '1';
+            selectedBox.element.classList.add('selected');
 
             // request word info from server
             const word = this.querySelector('.middle').innerText;
@@ -59,9 +60,10 @@ function removeBoxStyles() {
     //     b.style.zIndex = '0';
     // });
     if (selectedBox) {
-        selectedBox.element.style.boxShadow = 'none';
-        selectedBox.element.style.zIndex = '0';
+        // selectedBox.element.style.boxShadow = 'none';
+        // selectedBox.element.style.zIndex = '0';
         document.getElementById('word-info').innerText = '...';
+        selectedBox.element.classList.remove('selected');
     }
 }
 

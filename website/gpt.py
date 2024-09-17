@@ -47,7 +47,7 @@ def translate_word_in_context(context, word, translation):
                 {"role": "system", "content": "summarise briefly"},
                 {"role": "user", "content": 
                     #"Translate only the word between *s. Give the ENGLISH only, with no *s. Never give chinese. Translate the word IN CONTEXT. No more than 4 words.\n" + text}
-                    "Write the (english) translation of the given word that was decided upon (do NOT give a sentence) and nothing else. Here is the output:\n" + temp
+                    f"Write the (english) translation of the given word (${word}) that was decided upon (do NOT give a sentence) and nothing else. Your output should be a word. Do not include the translation of the sentence, or phrases like 'to' in verbs. Do not include commas or semicolons. Here is your previous output (with too many words):\n" + temp
                 }
             ],
             temperature = 0.0,
@@ -56,5 +56,8 @@ def translate_word_in_context(context, word, translation):
         temp = completion.choices[0].message.content.lower().replace(word, "").strip() # to be printed for logs
         ans = temp.split("\n")[-1].split(":")[-1].strip()
         print("NEW ANS: " + ans)
+
+    # remove full stop
+    ans = ans.removesuffix(".")
 
     return ans

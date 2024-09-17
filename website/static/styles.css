@@ -46,7 +46,18 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100px; /* Adjust height as needed */
+    height: 100px;
+    caret-color: transparent;
+}
+
+.selected {
+    background-color: #333;
+    border-radius: 10px;
+}
+
+.box:hover {
+    background-color: #333;
+    border-radius: 10px;
 }
 
 .top {
@@ -54,6 +65,7 @@ body {
     height: 20px;
     color: #888888;
     z-index: 10; /* Make sure it's above other elements */
+    user-select: none;
 }
 
 .active .top {
@@ -71,6 +83,7 @@ body {
 .bottom {
     font-size: 14px;
     min-height: 15px;
+    user-select: none;
 }
 
 .middle {
@@ -83,7 +96,16 @@ body {
 
 .tones {
     white-space: pre;
+    color: #888888;
     height: 20px;
+    display: none;
+    user-select: none;
+}
+
+.active .tones {
+    white-space: pre;
+    height: 20px;
+    display: block;
 }
 
 .active .box:hover .tones {
