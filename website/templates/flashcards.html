@@ -14,7 +14,8 @@
             <div id="back">back</div>
         </div>
         <div>
-            <button id="none" class="button">none</button>
+            <button id="none" onkeyup="(arguments[0] || window.event).preventDefault();" 
+            onclick="(arguments[0] || window.event).stopPropagation();" class="button">none</button>
             <button id="pinyin" class="button">pinyin</button>
             <button id="meaning" class="button">meaning</button>
             <button id="both" class="button">both</button>

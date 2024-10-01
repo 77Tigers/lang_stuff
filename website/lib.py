@@ -25,6 +25,7 @@ song_options = [
     "rehearse_mirror_rose",
     "passengers",
     "meet_current_you",
+    "invisible_puzzle",
 ]
 
 # checks if word uses roman characters

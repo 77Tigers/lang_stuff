@@ -35,7 +35,7 @@ def get_defs(word):
     if lookup_results is not None:
         defs = lookup_results.definition_entries
         for definition in defs:
-            back_side += "\n" + definition.pinyin + " " + ";".join(definition.definitions)
+            back_side += "\n" + definition.pinyin + " " + "; ".join(definition.definitions)
     
     return back_side, found_single, lookup_successful
 

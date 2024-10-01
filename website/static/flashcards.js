@@ -4,7 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let answer = "";
 
     let frontOfCard = true;
+
     let card_no = 0;
+    newFlashcard();
 
     function newFlashcard() {
         fetch(
@@ -30,15 +32,28 @@ document.addEventListener('DOMContentLoaded', () => {
         flashcard.classList.toggle('flip');
     });
 
+    // space to flip the card
+    document.addEventListener('keydown', (event) => {
+        if (event.key === " ") {
+            flashcard.classList.toggle('flip');
+        }
+        if (event.key === "Enter") {
+            card_no++;
+            newFlashcard();
+            frontOfCard = true;
+            flashcard.classList.remove('flip');
+        }
+    });
+
     // add event listener for none button
     document.getElementById('none').addEventListener('click', () => {
         // if the card is flipped, flip it back
-        if (flashcard.classList.contains('flip')) {
-            flashcard.classList.toggle('flip');
-        }
+        flashcard.classList.remove('flip');
         frontOfCard = true;
         // get a new flashcard
         card_no++;
         newFlashcard();
     });
+
+    
 });
