@@ -87,11 +87,12 @@ body {
 }
 
 .middle {
-    font-size: 44px;
+    font-size: 54px;
     flex-grow: 1;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-family: KaiTi, sans-serif;
 }
 
 .tones {

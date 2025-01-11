@@ -26,6 +26,11 @@ song_options = [
     "passengers",
     "meet_current_you",
     "invisible_puzzle",
+    "lonely_people",
+    "are_no_better",
+    "stubborn_blazing_sun",
+    "you_are_the_hero",
+    "dust",
 ]
 
 # checks if word uses roman characters
